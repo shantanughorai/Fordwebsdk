@@ -1,0 +1,97 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.1, maximum-scale=1.0">
+		<script src="libs/jquery.js" type="text/javascript"></script>
+		<script src="libs/jquery.tmpl.min.js" type="text/javascript"></script>
+		<script src="libs/jquery-ui.min.js" type="text/javascript"></script>
+		<link href="libs/jquery-ui.min.css" rel="stylesheet"></link>
+
+		<script src="../libs/lodash.min.js"></script>
+		<script src='../libs/anonymousassertion.js'></script>
+		<script src="../kore-bot-sdk-client.js"></script>
+		<script src="chatWindow.js" type="text/javascript"></script>
+		<script src="../libs/emoji.js" type="text/javascript"></script>
+		<script src="../libs/recorder.js" type="text/javascript"></script>
+		<script src="../libs/recorderWorker.js" type="text/javascript"></script>
+		<link href="chatWindow.css" rel="stylesheet"></link>
+		<link href="../libs/emojione.sprites.css" rel="stylesheet"></link>
+		<link href="../libs/purejscarousel.css" rel="stylesheet"></link>
+		<script src="../libs/purejscarousel.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		function guid() {
+  				function s4() {
+    		return Math.floor((1 + Math.random()) * 0x10000)
+      			.toString(16)
+      			.substring(1);
+  					}
+  				return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    			s4() + '-' + s4() + s4() + s4();
+			}
+			$(document).on("ready", function () {
+				function assertion(options, callback) {
+					var jsonData = {
+						"clientId": botOptions.clientId,
+						"clientSecret": "UedWDL+q95ig47VZfc2Np2Vu+5FprPGFH7fNIBU5nD8=",
+						"identity": botOptions.userIdentity,
+						"aud": "",
+						"isAnonymous": true
+					};
+					$.ajax({
+						url: "https://fbintegration.kore.com/jwtservice/api/users/sts",
+						type: 'post',
+						data: jsonData,
+						dataType: 'json',
+							success: function (data) {
+							options.assertion = data.jwt;
+							options.handleError = koreBot.showError;
+							options.botDetails = koreBot.botDetails;
+							callback(null, options);
+							setTimeout(function () {
+								if (koreBot && koreBot.initToken) {
+									koreBot.initToken(options);
+								}
+							}, 2000);
+						},
+						error: function (err) {
+							koreBot.showError(err.responseText);
+						}
+					});
+				}
+
+				var botOptions = {};
+				botOptions.logLevel = 'debug';
+				botOptions.koreAPIUrl = "https://bots.kore.ai/api/";
+				botOptions.koreSpeechAPIUrl = "https://speech.kore.ai/";
+				//botOptions.bearer = "bearer h05dm0TrDlIBI2C4ZS1h5238gyPLUOsisxEMEphPsIrhlUHVgKBfKHUX8AUz0gjT";
+				botOptions.ttsSocketUrl = 'wss://speech.kore.ai/tts/ws';
+				botOptions.userIdentity = guid();// Provide users email id here
+				botOptions.recorderWorkerPath = '../libs/recorderWorker.js';
+				botOptions.assertionFn = assertion;
+				botOptions.koreAnonymousFn = koreAnonymousFn;
+				botOptions.clientId   = "cs-60defb40-d789-50b5-944b-1506fafc744f"; // secure client-id
+				botOptions.botInfo = {name:"FORD Poc_Demo","_id":"st-b1341b26-18fe-53da-9020-fec09b679e5a"}; // bot name is case sensitive
+				
+				var chatConfig={
+					botOptions:botOptions,
+					allowIframe: false,
+					isSendButton: false,
+					isTTSEnabled: true,
+					isSpeechEnabled: true
+				};
+				var koreBot = koreBotChat();
+				koreBot.show(chatConfig);
+				$('.openChatWindow').click(function () {
+					koreBotChat().show(chatConfig);
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<div id="chatContainer">
+			<button class="openChatWindow">Open Chat Window</button>
+		</div>
+	</body>
+
+</html>
