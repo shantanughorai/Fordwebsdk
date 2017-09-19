@@ -65,7 +65,11 @@
 				botOptions.koreSpeechAPIUrl = "https://speech.kore.ai/";
 				//botOptions.bearer = "bearer h05dm0TrDlIBI2C4ZS1h5238gyPLUOsisxEMEphPsIrhlUHVgKBfKHUX8AUz0gjT";
 				botOptions.ttsSocketUrl = 'wss://speech.kore.ai/tts/ws';
-				botOptions.userIdentity = guid();// Provide users email id here
+				var korecookie = localStorage.getItem("korecom");
+	var uuid = (korecookie) || guid();
+
+	localStorage.setItem("korecom", uuid);
+				botOptions.userIdentity = uuid;// Provide users email id here
 				botOptions.recorderWorkerPath = '../libs/recorderWorker.js';
 				botOptions.assertionFn = assertion;
 				botOptions.koreAnonymousFn = koreAnonymousFn;
