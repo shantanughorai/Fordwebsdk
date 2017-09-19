@@ -33,7 +33,7 @@ function koreAnonymousFn(options) {
 	var assertion = {};
 	assertion.issuer = options.clientId;
 	assertion.subject = uuid;
-
+console.log(assertion.subject);
 	options.assertion = assertion;
 
 	this.options = options;
