@@ -71,9 +71,6 @@
 				botOptions.koreAnonymousFn = koreAnonymousFn;
 				botOptions.clientId   = "cs-60defb40-d789-50b5-944b-1506fafc744f"; // secure client-id
 				botOptions.botInfo = {name:"FORD IT BOT","_id":"st-b1341b26-18fe-53da-9020-fec09b679e5a"}; // bot name is case sensitive
-				var korecookie = localStorage.getItem("korecom");
-                var uuid = (korecookie) || koreGenerateUUID();
-                localStorage.setItem("korecom", guid);
 				var chatConfig={
 					botOptions:botOptions,
 					allowIframe: false,
