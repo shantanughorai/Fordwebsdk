@@ -1095,6 +1095,7 @@ function koreBotChat() {
     };
 
     chatWindow.prototype.renderMessage = function (msgData) {
+        resetPingMessage();
         var me = this, messageHtml = '', extension = '', _extractedFileName = '';
         if (msgData.type === "bot_response") {
             setTimeout(function () {
